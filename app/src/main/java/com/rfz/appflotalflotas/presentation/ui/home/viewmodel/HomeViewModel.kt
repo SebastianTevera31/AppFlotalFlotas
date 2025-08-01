@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.rfz.appflotalflotas.core.util.AppLocale
 import com.rfz.appflotalflotas.data.model.flotalSoft.AppFlotalEntity
 import com.rfz.appflotalflotas.data.model.languaje.LanguageResponse
-import com.rfz.appflotalflotas.data.repository.FscSoftRepository
+import com.rfz.appflotalflotas.data.repository.database.FscSoftRepository
 import com.rfz.appflotalflotas.domain.languaje.LanguajeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext

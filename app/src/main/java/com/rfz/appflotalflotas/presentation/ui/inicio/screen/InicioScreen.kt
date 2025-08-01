@@ -28,32 +28,26 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.rfz.appflotalflotas.R
+import com.rfz.appflotalflotas.presentation.theme.ProyectoFscSoftTheme
 
 
 @Composable
 fun InicioScreen(
     navController: NavController,
-
-
 ) {
-
-
-
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
         Body(
-            Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
+            Modifier.fillMaxWidth().padding(8.dp),
             navController
-
         )
     }
 }
@@ -62,7 +56,6 @@ fun InicioScreen(
 fun Body(
     modifier: Modifier,
     navController: NavController,
-
 ) {
     val viewModelScope = rememberCoroutineScope()
     Column(
@@ -91,8 +84,6 @@ fun ImageLogoInicio() {
 
     )
 }
-
-
 
 @SuppressLint("ResourceAsColor")
 @Composable

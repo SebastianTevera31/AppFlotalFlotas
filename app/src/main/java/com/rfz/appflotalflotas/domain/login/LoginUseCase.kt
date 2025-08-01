@@ -1,5 +1,6 @@
 package com.rfz.appflotalflotas.domain.login
 
+import android.util.Log
 import com.google.gson.Gson
 import com.rfz.appflotalflotas.data.model.login.response.LoginErrorResponse
 import com.rfz.appflotalflotas.data.model.login.response.LoginResponse
@@ -18,7 +19,7 @@ class LoginUseCase @Inject constructor(
         return try {
             val response = repository.doLogin(usuario, password)
             if (response.isSuccessful) {
-                response.body()?.firstOrNull()?.let { loginResponse ->
+                response.body()?.let { loginResponse ->
                     Result.Success(loginResponse)
                 } ?: Result.Failure(Exception("Cuerpo de la respuesta vacío"))
             } else {
@@ -26,11 +27,14 @@ class LoginUseCase @Inject constructor(
                 val parsedError = try {
                     gson.fromJson(errorMsg, LoginErrorResponse::class.java).message.errorValue
                 } catch (e: Exception) {
+                    Log.e("LoginUseCase", "$e")
                     "Error desconocido del servidor"
                 }
+                Log.e("LoginUseCase", "$parsedError")
                 Result.Failure(Exception(parsedError))
             }
         } catch (e: Exception) {
+            Log.e("LoginUseCase", "$e")
             Result.Failure(e)
         }
     }

@@ -9,9 +9,9 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class LoginService @Inject constructor(private val loginClient: LoginClient) {
-
-    suspend fun doLogin(requestBody: LoginDto): Response<List<LoginResponse>> {
-        return withContext(Dispatchers.IO) { loginClient.doLogin(requestBody)
+    suspend fun doLogin(requestBody: LoginDto): Response<LoginResponse> {
+        return withContext(Dispatchers.IO) {
+            loginClient.doLogin(requestBody)
         }
     }
 }

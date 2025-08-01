@@ -35,11 +35,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.rfz.appflotalflotas.R
 import com.rfz.appflotalflotas.core.network.NetworkConfig
+import com.rfz.appflotalflotas.core.util.NavigationScreens
+import com.rfz.appflotalflotas.presentation.theme.ProyectoFscSoftTheme
 import com.rfz.appflotalflotas.presentation.theme.cardBackground
 import com.rfz.appflotalflotas.presentation.theme.lightBackground
 import com.rfz.appflotalflotas.presentation.theme.primaryColor
@@ -47,6 +51,7 @@ import com.rfz.appflotalflotas.presentation.theme.primaryLight
 import com.rfz.appflotalflotas.presentation.theme.secondaryColor
 import com.rfz.appflotalflotas.presentation.theme.surfaceColor
 import com.rfz.appflotalflotas.presentation.ui.home.viewmodel.HomeViewModel
+import com.rfz.appflotalflotas.presentation.ui.inicio.screen.InicioScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -98,15 +103,39 @@ fun HomeScreen(
 
     val menuItems = listOf(
         MenuItem(stringResource(R.string.brands), "marcas_screen", R.drawable.ic_brand),
-        MenuItem(stringResource(R.string.original_design), "diseno_original_screen", R.drawable.ic_tire_design),
-        MenuItem(stringResource(R.string.tire_sizes), "medidasLlantasScreen", R.drawable.ic_tire_size),
+        MenuItem(
+            stringResource(R.string.original_design),
+            "diseno_original_screen",
+            R.drawable.ic_tire_design
+        ),
+        MenuItem(
+            stringResource(R.string.tire_sizes),
+            "medidasLlantasScreen",
+            R.drawable.ic_tire_size
+        ),
         MenuItem(stringResource(R.string.products), "productoScreen", R.drawable.ic_products),
-        MenuItem(stringResource(R.string.tire_register), "registroLlantasScreen", R.drawable.ic_tire_register),
-        MenuItem(stringResource(R.string.vehicle_register), "registroVehiculoScreen", R.drawable.ic_truck),
-        MenuItem(stringResource(R.string.tire_change), "montajeDesmontajeScreen", R.drawable.ic_tire_change)
+        MenuItem(
+            stringResource(R.string.tire_register),
+            "registroLlantasScreen",
+            R.drawable.ic_tire_register
+        ),
+        MenuItem(
+            stringResource(R.string.vehicle_register),
+            "registroVehiculoScreen",
+            R.drawable.ic_truck
+        ),
+        MenuItem(
+            stringResource(R.string.tire_change),
+            "montajeDesmontajeScreen",
+            R.drawable.ic_tire_change
+        ),
+        MenuItem(
+            title = "Monitoreo",
+            route = NavigationScreens.MONITOR.name,
+            iconRes = R.drawable.monitor
+        )
     )
     val scope = rememberCoroutineScope()
-
 
     Scaffold(
         topBar = {
@@ -151,7 +180,8 @@ fun HomeScreen(
                                             scope.launch {
                                                 homeViewModel.changeLanguage(code)
                                             }
-                                        }   .background(
+                                        }
+                                        .background(
                                             if (uiState.selectedLanguage == code)
                                                 Color.White.copy(alpha = 0.3f)
                                             else
@@ -290,7 +320,7 @@ fun HomeScreen(
                         ElegantMenuCard(
                             title = item.title,
                             iconRes = item.iconRes,
-                            onClick = {  },
+                            onClick = { navController.navigate(item.route) },
                             primaryColor = primaryColor,
                             secondaryColor = secondaryColor,
                             cardBackground = cardBackground

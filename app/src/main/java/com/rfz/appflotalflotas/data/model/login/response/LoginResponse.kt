@@ -12,16 +12,23 @@ sealed class LoginState {
     data class Success(val userData: LoginResponse) : LoginState()
     data class Error(val message: String) : LoginState()
 }
+
 data class LoginResponse(
-    @SerializedName("id_user") val id_user: Int,
-    @SerializedName("fld_name") val fld_name: String,
-    @SerializedName("fld_username") val fld_username: String,
-    @SerializedName("fld_email") val fld_email: String,
-    @SerializedName("fld_token") val fld_token: String,
-    @SerializedName("id") val id: Int,
+    @SerializedName("id_user") val idUser: Int,
+    @SerializedName("fld_username") val fldName: String,
+    @SerializedName("fld_fullName") val fldUsername: String,
+    @SerializedName("fld_email") val fldEmail: String,
+    @SerializedName("c_typeUser_fk_1") val fldToken: Int,
+    @SerializedName("c_fleets") val cFleets: List<Fleets>,
+    @SerializedName("token") val token: String,
+    @SerializedName("success") val success: Int,
     var fecha: String? = null
 )
 
+data class Fleets(
+    @SerializedName("c_fleet_fk_2") val cFleet: Int,
+    @SerializedName("fld_description") val fldDescription: String
+)
 
 data class LoginSuccessResponse(
     @SerializedName("id_user") val idUser: Int,
@@ -32,7 +39,6 @@ data class LoginSuccessResponse(
     @SerializedName("id") val statusCode: Int,
     @SerializedName("fld_active") val isActive: Boolean
 )
-
 
 data class LoginErrorResponse(
     @SerializedName("mensaje") val message: ErrorMessage
@@ -45,17 +51,15 @@ data class ErrorMessage(
     @SerializedName("searchedLocation") val searchedLocation: String
 )
 
-
-
 @Singleton
 class AppFlotalMapper @Inject constructor() {
     fun fromLoginResponseToEntity(response: LoginResponse): AppFlotalEntity {
         return AppFlotalEntity(
             id = 0,
-            id_user = response.id_user,
-            fld_name = response.fld_name ?: "",
-            fld_email = response.fld_email ?: "",
-            fld_token = response.fld_token ?: "",
+            id_user = response.idUser,
+            fld_name = response.fldName,
+            fld_email = response.fldEmail,
+            fld_token = response.fldToken.toString(),
             fecha = response.fecha ?: ""
         )
     }

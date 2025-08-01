@@ -8,6 +8,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface LoginClient {
-    @POST("api/authenticate")
-    suspend fun doLogin(@Body requestBody: LoginDto):  Response<List<LoginResponse>>
+    @POST("api/login/authenticate")
+    suspend fun doLogin(@Body requestBody: LoginDto): Response<LoginResponse>
 }

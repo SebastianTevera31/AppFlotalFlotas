@@ -1,5 +1,6 @@
 package com.rfz.appflotalflotas.presentation.ui.login.viewmodel
 
+
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -8,28 +9,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import  com.rfz.appflotalflotas.data.model.login.response.Result
-
-
 import com.rfz.appflotalflotas.data.model.login.response.AppFlotalMapper
 import com.rfz.appflotalflotas.data.model.login.response.LoginResponse
-
 import com.rfz.appflotalflotas.data.model.login.response.LoginState
-
-import com.rfz.appflotalflotas.domain.login.LoginUseCase
+import com.rfz.appflotalflotas.data.model.login.response.Result
 import com.rfz.appflotalflotas.domain.database.AddTaskUseCase
+import com.rfz.appflotalflotas.domain.login.LoginUseCase
 import com.slc.encargado.utils.LBEncryptionUtils
-
-
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
+
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
@@ -97,14 +92,14 @@ class LoginViewModel @Inject constructor(
                 val user = LBEncryptionUtils.encrypt(usuario.value!!)
                 val pass = LBEncryptionUtils.encrypt(password.value!!)
 
-                when (val result = loginUseCase(user, pass)) {
+                when (val result = loginUseCase(usuario.value!!, password.value!!)) {
                     is Result.Success -> {
-                        result.data.let { response ->
-                            handleLoginResponse(response)
-                        }
+                        handleLoginResponse(result.data)
                     }
+
                     is Result.Failure -> {
-                        _loginState.value = LoginState.Error(result.exception.message ?: "Unknown error")
+                        _loginState.value =
+                            LoginState.Error(result.exception.message ?: "Unknown error")
                         _loginMessage.value = result.exception.message ?: "Authentication error"
                     }
                 }
@@ -118,20 +113,16 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleLoginResponse(loginResponse: LoginResponse) {
-        when {
-            loginResponse.id == 200 -> {
+    private fun handleLoginResponse(loginResponse: LoginResponse) {
+        when (loginResponse.success) {
+            1 -> {
                 onTaskCreated(loginResponse)
                 _navigateToHome.value = true
                 _loginState.value = LoginState.Success(loginResponse)
             }
-            loginResponse.id == -100 -> {
-                _loginMessage.value = "Credenciales incorrectas"
-                _isLoginEnable.value = true
-                _loginState.value = LoginState.Error("Credenciales incorrectas")
-            }
+
             else -> {
-                _loginMessage.value = "Error en el servidor: ${loginResponse.id}"
+                _loginMessage.value = "Error en el servidor: ${loginResponse.idUser}"
                 _loginState.value = LoginState.Error("Error en el servidor")
             }
         }
@@ -154,7 +145,4 @@ class LoginViewModel @Inject constructor(
     fun onNavigateToVerificodeloginComplete() {
         _navigateverifycodeloginScreen.value = false
     }
-
-
-
 }

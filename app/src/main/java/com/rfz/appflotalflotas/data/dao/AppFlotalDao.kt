@@ -10,26 +10,15 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AppFlotalDao {
-
     @Query("SELECT * from AppFlotalEntity")
     fun getData(): Flow<List<AppFlotalEntity>>
-
-
 
     @Query("DELETE FROM AppFlotalEntity")
     suspend fun deleteAllFlotalSoft()
 
-
     @Delete
     suspend fun deleteFlotalSoft(item: AppFlotalEntity)
 
-
-
     @Insert
-    suspend fun addFlotalSoft(item:AppFlotalEntity)
-
-
-
-
-
+    suspend fun addFlotalSoft(item: AppFlotalEntity)
 }
