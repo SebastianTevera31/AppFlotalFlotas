@@ -65,6 +65,18 @@ class MonitorViewModel @Inject constructor(
 
     private fun collectSensorData() {
         viewModelScope.launch {
+            assemblyUseCase.doSendMonitorData(
+                fldFrame = "aaa1410e6302479752001c500ca7",
+                idVehicle = 48,
+                language = "es",
+                idFleet = 24,
+                fldDate = getCurrentDate()
+            )
+
+            assemblyUseCase.doGetDataMonitorByIdVehicle(
+                idVehicle = 48,
+                fldDate = "2025-08-02"
+            )
 
             bluetoothData.collect { data ->
                 Log.d("MonitorViewModel", "$data")

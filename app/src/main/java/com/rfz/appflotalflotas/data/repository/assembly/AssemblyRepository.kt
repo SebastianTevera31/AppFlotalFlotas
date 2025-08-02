@@ -1,7 +1,6 @@
 package com.rfz.appflotalflotas.data.repository.assembly
 
-import android.util.Log
-import com.rfz.appflotalflotas.data.model.assembly.MonitorDataResponse
+import com.rfz.appflotalflotas.data.model.assembly.MonitorDataRequest
 import com.rfz.appflotalflotas.data.network.service.assembly.AssemblyService
 import javax.inject.Inject
 
@@ -21,7 +20,7 @@ class AssemblyRepository @Inject constructor(private val assemblyService: Assemb
         fldDate: String
     ) {
         assemblyService.doSendMonitorData(
-            MonitorDataResponse(
+            MonitorDataRequest(
                 fldFrame = fldFrame,
                 idVehicle = idVehicle,
                 language = language,

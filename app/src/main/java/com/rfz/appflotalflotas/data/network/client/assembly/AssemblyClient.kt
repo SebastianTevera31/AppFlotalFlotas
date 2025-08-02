@@ -1,7 +1,8 @@
 package com.rfz.appflotalflotas.data.network.client.assembly
 
+import com.rfz.appflotalflotas.data.model.assembly.MonitorDataByVehicleResponse
+import com.rfz.appflotalflotas.data.model.assembly.MonitorDataRequest
 import com.rfz.appflotalflotas.data.model.assembly.MonitorDataResponse
-import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -14,8 +15,8 @@ interface AssemblyClient {
     suspend fun getDataMonitorByIdVehicle(
         @Query("id_vehicle") idVehicle: Int,
         @Query("fld_date") fldDate: String
-    )
+    ): Response<List<MonitorDataByVehicleResponse>>
 
     @POST("api/Assembly/MonitorData")
-    suspend fun sendDataMonitor(@Body monitorData: MonitorDataResponse): Response<ResponseBody>
+    suspend fun sendDataMonitor(@Body monitorData: MonitorDataRequest): Response<List<MonitorDataResponse>>
 }

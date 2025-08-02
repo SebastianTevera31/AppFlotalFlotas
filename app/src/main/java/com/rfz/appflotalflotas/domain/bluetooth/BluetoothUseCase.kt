@@ -10,7 +10,7 @@ class BluetoothUseCase @Inject constructor(private val bluetoothRepository: Blue
         return bluetoothRepository.sensorData
     }
 
-    fun doConnect(mac: String) = bluetoothRepository.connect("80:F5:B5:70:5C:8F")
+    fun doConnect(mac: String = "80:F5:B5:70:5C:8F") = bluetoothRepository.connect(mac)
 
     suspend fun doStartRssiMonitoring() = bluetoothRepository.startRSSIMonitoring()
 }

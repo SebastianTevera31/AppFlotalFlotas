@@ -193,7 +193,13 @@ class HombreCamionService : Service() {
                 oldestTimestamp = null
             }
 
-//            assemblyUseCase.doSendMonitorData()
+            assemblyUseCase.doSendMonitorData(
+                fldFrame = dataFrame,
+                idVehicle = 48,
+                language = "es",
+                idFleet = 24,
+                fldDate = getCurrentDate()
+            )
 
         } else if (wifiStatus.value == NetworkStatus.Disconnected && oldestTimestamp.isNullOrEmpty()) {
             oldestTimestamp = timestamp

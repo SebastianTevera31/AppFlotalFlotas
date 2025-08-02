@@ -30,7 +30,7 @@ class LoginUseCase @Inject constructor(
                     Log.e("LoginUseCase", "$e")
                     "Error desconocido del servidor"
                 }
-                Log.e("LoginUseCase", "$parsedError")
+                Log.e("LoginUseCase", parsedError)
                 Result.Failure(Exception(parsedError))
             }
         } catch (e: Exception) {

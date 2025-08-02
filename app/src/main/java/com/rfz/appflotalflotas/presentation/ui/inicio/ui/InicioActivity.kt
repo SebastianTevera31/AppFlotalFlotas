@@ -10,7 +10,6 @@ import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -29,7 +28,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.rfz.appflotalflotas.core.network.NetworkConfig
-import com.rfz.appflotalflotas.core.util.NavigationScreens
+import com.rfz.appflotalflotas.core.util.FlotalFlotasScreens
 
 import com.rfz.appflotalflotas.presentation.theme.ProyectoFscSoftTheme
 
@@ -145,7 +144,6 @@ class InicioActivity : ComponentActivity() {
                             }
                         }
 
-
                         NavHost(
                             navController = navController,
                             startDestination = NetworkConfig.LOADING
@@ -158,7 +156,9 @@ class InicioActivity : ComponentActivity() {
                                 )
                             }
 
-                            composable(NetworkConfig.INICIO) { InicioScreen(navController) }
+                            composable(NetworkConfig.INICIO) {
+                                InicioScreen(navController)
+                            }
 
                             composable(NetworkConfig.HOME) {
                                 HomeScreen(
@@ -168,7 +168,19 @@ class InicioActivity : ComponentActivity() {
                                 )
                             }
 
-                            composable(NavigationScreens.MONITOR.name) {
+                            composable(FlotalFlotasScreens.DISENIO_ORIGINAL.name) {}
+
+                            composable(FlotalFlotasScreens.DIMENSIONES.name) {}
+
+                            composable(FlotalFlotasScreens.PRODUCTOS.name) {}
+
+                            composable(FlotalFlotasScreens.LLANTAS.name) {}
+
+                            composable(FlotalFlotasScreens.VEHICULOS.name) {}
+
+                            composable(FlotalFlotasScreens.MONTAJE.name) {}
+
+                            composable(FlotalFlotasScreens.MONITOR.name) {
 
                                 LaunchedEffect(Unit) {
                                     val granted = ContextCompat.checkSelfPermission(

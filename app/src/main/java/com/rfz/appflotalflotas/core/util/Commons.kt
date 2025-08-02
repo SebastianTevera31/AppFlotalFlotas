@@ -6,16 +6,21 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 object Commons {
     private const val TAG = "CameraXCompose"
     fun showLog(log: String) {
-        Log.d(com.rfz.appflotalflotas.core.util.Commons.TAG, log)
+        Log.d(TAG, log)
     }
 
     val REQUIRED_PERMISSIONS =
         mutableListOf(
             Manifest.permission.CAMERA,
+            Manifest.permission.BLUETOOTH_CONNECT
         ).apply {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
                 add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -23,8 +28,14 @@ object Commons {
         }.toTypedArray()
 
     fun allPermissionsGranted(ctx: Context) =
-        com.rfz.appflotalflotas.core.util.Commons.REQUIRED_PERMISSIONS.all {
+        REQUIRED_PERMISSIONS.all {
             ContextCompat.checkSelfPermission(ctx, it) ==
                     PackageManager.PERMISSION_GRANTED
         }
+
+    fun getCurrentDate(): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        sdf.timeZone = TimeZone.getTimeZone("UTC")
+        return sdf.format(Date())
+    }
 }

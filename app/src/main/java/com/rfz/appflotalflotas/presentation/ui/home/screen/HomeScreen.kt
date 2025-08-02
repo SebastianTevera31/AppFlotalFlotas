@@ -19,7 +19,6 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,15 +34,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.rfz.appflotalflotas.R
 import com.rfz.appflotalflotas.core.network.NetworkConfig
-import com.rfz.appflotalflotas.core.util.NavigationScreens
-import com.rfz.appflotalflotas.presentation.theme.ProyectoFscSoftTheme
+import com.rfz.appflotalflotas.core.util.FlotalFlotasScreens
 import com.rfz.appflotalflotas.presentation.theme.cardBackground
 import com.rfz.appflotalflotas.presentation.theme.lightBackground
 import com.rfz.appflotalflotas.presentation.theme.primaryColor
@@ -51,7 +47,6 @@ import com.rfz.appflotalflotas.presentation.theme.primaryLight
 import com.rfz.appflotalflotas.presentation.theme.secondaryColor
 import com.rfz.appflotalflotas.presentation.theme.surfaceColor
 import com.rfz.appflotalflotas.presentation.ui.home.viewmodel.HomeViewModel
-import com.rfz.appflotalflotas.presentation.ui.inicio.screen.InicioScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -105,33 +100,37 @@ fun HomeScreen(
         MenuItem(stringResource(R.string.brands), "marcas_screen", R.drawable.ic_brand),
         MenuItem(
             stringResource(R.string.original_design),
-            "diseno_original_screen",
+            FlotalFlotasScreens.DISENIO_ORIGINAL.name,
             R.drawable.ic_tire_design
         ),
         MenuItem(
             stringResource(R.string.tire_sizes),
-            "medidasLlantasScreen",
+            FlotalFlotasScreens.DIMENSIONES.name,
             R.drawable.ic_tire_size
         ),
-        MenuItem(stringResource(R.string.products), "productoScreen", R.drawable.ic_products),
+        MenuItem(
+            stringResource(R.string.products),
+            FlotalFlotasScreens.PRODUCTOS.name,
+            R.drawable.ic_products
+        ),
         MenuItem(
             stringResource(R.string.tire_register),
-            "registroLlantasScreen",
+            FlotalFlotasScreens.LLANTAS.name,
             R.drawable.ic_tire_register
         ),
         MenuItem(
             stringResource(R.string.vehicle_register),
-            "registroVehiculoScreen",
+            FlotalFlotasScreens.VEHICULOS.name,
             R.drawable.ic_truck
         ),
         MenuItem(
             stringResource(R.string.tire_change),
-            "montajeDesmontajeScreen",
+            FlotalFlotasScreens.MONTAJE.name,
             R.drawable.ic_tire_change
         ),
         MenuItem(
             title = "Monitoreo",
-            route = NavigationScreens.MONITOR.name,
+            route = FlotalFlotasScreens.MONITOR.name,
             iconRes = R.drawable.monitor
         )
     )
