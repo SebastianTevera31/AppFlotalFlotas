@@ -4,7 +4,7 @@ package com.rfz.appflotalflotas.di.network
 import android.app.Application
 import android.content.Context
 import com.rfz.appflotalflotas.core.network.NetworkConfig
-import com.rfz.appflotalflotas.data.network.client.assembly.AssemblyClient
+import com.rfz.appflotalflotas.data.network.client.tpms.TpmsClient
 import com.rfz.appflotalflotas.data.network.client.languaje.LanguajeClient
 import com.rfz.appflotalflotas.data.network.client.login.LoginClient
 import com.rfz.appflotalflotas.data.repository.bluetooth.BluetoothRepository
@@ -15,7 +15,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -67,8 +66,8 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideAssemblyClient(retrofit: Retrofit): AssemblyClient {
-        return retrofit.create(AssemblyClient::class.java)
+    fun provideTpmsClient(retrofit: Retrofit): TpmsClient {
+        return retrofit.create(TpmsClient::class.java)
     }
 }
 

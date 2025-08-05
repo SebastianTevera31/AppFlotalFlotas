@@ -22,7 +22,7 @@ import com.rfz.appflotalflotas.data.model.flotalSoft.SensorTpmsEntity
 import com.rfz.appflotalflotas.data.repository.bluetooth.MonitorDataFrame
 import com.rfz.appflotalflotas.data.repository.bluetooth.decodeDataFrame
 import com.rfz.appflotalflotas.data.repository.wifi.NetworkStatus
-import com.rfz.appflotalflotas.domain.assembly.AssemblyUseCase
+import com.rfz.appflotalflotas.domain.tpms.TpmsUseCase
 import com.rfz.appflotalflotas.domain.bluetooth.BluetoothUseCase
 import com.rfz.appflotalflotas.domain.database.SensorTableUseCase
 import com.rfz.appflotalflotas.domain.wifi.WifiUseCase
@@ -40,7 +40,7 @@ class HombreCamionService : Service() {
     lateinit var bluetoothUseCase: BluetoothUseCase
 
     @Inject
-    lateinit var assemblyUseCase: AssemblyUseCase
+    lateinit var assemblyUseCase: TpmsUseCase
 
     @Inject
     lateinit var wifiUseCase: WifiUseCase
@@ -195,7 +195,7 @@ class HombreCamionService : Service() {
 
             assemblyUseCase.doSendMonitorData(
                 fldFrame = dataFrame,
-                idVehicle = 48,
+                idMonitor = 48,
                 language = "es",
                 idFleet = 24,
                 fldDate = getCurrentDate()

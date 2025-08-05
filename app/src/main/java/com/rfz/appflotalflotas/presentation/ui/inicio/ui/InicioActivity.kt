@@ -168,6 +168,8 @@ class InicioActivity : ComponentActivity() {
                                 )
                             }
 
+                            composable(FlotalFlotasScreens.MARCAS.name) {}
+
                             composable(FlotalFlotasScreens.DISENIO_ORIGINAL.name) {}
 
                             composable(FlotalFlotasScreens.DIMENSIONES.name) {}

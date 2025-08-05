@@ -13,7 +13,7 @@ import com.rfz.appflotalflotas.data.repository.bluetooth.MonitorDataFrame
 import com.rfz.appflotalflotas.data.repository.bluetooth.SensorAlertDataFrame
 import com.rfz.appflotalflotas.data.repository.bluetooth.decodeAlertDataFrame
 import com.rfz.appflotalflotas.data.repository.bluetooth.decodeDataFrame
-import com.rfz.appflotalflotas.domain.assembly.AssemblyUseCase
+import com.rfz.appflotalflotas.domain.tpms.TpmsUseCase
 import com.rfz.appflotalflotas.domain.bluetooth.BluetoothUseCase
 import com.rfz.appflotalflotas.domain.database.SensorTableUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +28,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MonitorViewModel @Inject constructor(
-    private val assemblyUseCase: AssemblyUseCase,
+    private val assemblyUseCase: TpmsUseCase,
     private val bluetoothUseCase: BluetoothUseCase,
     private val sensorTableUseCase: SensorTableUseCase
 ) : ViewModel() {
@@ -67,14 +67,18 @@ class MonitorViewModel @Inject constructor(
         viewModelScope.launch {
             assemblyUseCase.doSendMonitorData(
                 fldFrame = "aaa1410e6302479752001c500ca7",
-                idVehicle = 48,
+                idMonitor = 2,
                 language = "es",
                 idFleet = 24,
                 fldDate = getCurrentDate()
             )
 
-            assemblyUseCase.doGetDataMonitorByIdVehicle(
-                idVehicle = 48,
+            assemblyUseCase.doGetDiagramMonitor(2)
+
+            assemblyUseCase.doGetConfigurationByIdMonitor(2)
+
+            assemblyUseCase.doGetDataMonitorById(
+                idMonitor = 2,
                 fldDate = "2025-08-02"
             )
 

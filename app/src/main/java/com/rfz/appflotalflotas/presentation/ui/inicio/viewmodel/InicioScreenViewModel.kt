@@ -1,5 +1,6 @@
 package com.rfz.appflotalflotas.presentation.ui.inicio.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -35,6 +36,7 @@ class InicioScreenViewModel @Inject constructor(
                 _userData.value = tasks.firstOrNull()
                 _initialValidationCompleted.value = true
             } catch (e: Exception) {
+                Log.e("InicioScreenViewModel", "${e.message}")
                 _initialValidationCompleted.value = true
             }
         }
@@ -46,7 +48,7 @@ class InicioScreenViewModel @Inject constructor(
                 deleteTasksUseCase()
                 _userData.value = null
             } catch (e: Exception) {
-
+                Log.e("InicioScreenViewModel", "${e.message}")
             }
         }
     }

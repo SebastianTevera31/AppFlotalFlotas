@@ -1,6 +1,7 @@
 package com.rfz.appflotalflotas.presentation.ui.home.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -54,6 +55,7 @@ class HomeViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
+                Log.e("HomeViewModel", "${e.message}")
                 _uiState.update { it.copy(isLoading = false) }
                 _homeCheckInMessage.value = "Error loading data: ${e.message}"
             }
@@ -83,6 +85,7 @@ class HomeViewModel @Inject constructor(
 
                 result
             } catch (e: Exception) {
+                Log.e("HomeViewModel", "${e.message}")
                 _uiState.update { it.copy(isLoading = false) }
                 _homeCheckInMessage.value = "Error changing language: ${e.message}"
                 Result.failure(e)

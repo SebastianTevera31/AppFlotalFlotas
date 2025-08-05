@@ -3,6 +3,7 @@ package com.rfz.appflotalflotas.presentation.ui.login.viewmodel
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -104,6 +105,7 @@ class LoginViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
+                Log.e("LoginViewModel", "${ e.message }")
                 _loginState.value = LoginState.Error(e.message ?: "Unexpected error")
                 _loginMessage.value = e.message ?: "Connection error"
             } finally {

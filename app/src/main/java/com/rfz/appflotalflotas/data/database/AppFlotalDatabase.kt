@@ -8,7 +8,7 @@ import com.rfz.appflotalflotas.data.model.flotalSoft.AppFlotalEntity
 import com.rfz.appflotalflotas.data.model.flotalSoft.SensorTpmsEntity
 
 @Database(
-    entities = arrayOf(AppFlotalEntity::class, SensorTpmsEntity::class),
+    entities = [AppFlotalEntity::class, SensorTpmsEntity::class],
     version = 1,
     exportSchema = false
 )

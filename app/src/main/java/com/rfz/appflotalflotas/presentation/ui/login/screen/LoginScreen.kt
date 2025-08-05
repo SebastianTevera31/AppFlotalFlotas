@@ -81,38 +81,39 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel, navController: NavController) {
 
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = Color.White
-        ) {
-            val loginState by loginViewModel.loginState.collectAsState()
-            val context = LocalContext.current
-             val isProgressVisible by loginViewModel.isProgressVisible.collectAsState()
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color.White
+    ) {
+        val loginState by loginViewModel.loginState.collectAsState()
+        val context = LocalContext.current
+        val isProgressVisible by loginViewModel.isProgressVisible.collectAsState()
 
-            LaunchedEffect(loginState) {
-                when (val state = loginState) {
-                    is LoginState.Success -> {
-                        navController.navigate(NetworkConfig.HOME) {
-                            popUpTo(NetworkConfig.LOGIN) { inclusive = true }
-                        }
+        LaunchedEffect(loginState) {
+            when (loginState) {
+                is LoginState.Success -> {
+                    navController.navigate(NetworkConfig.HOME) {
+                        popUpTo(NetworkConfig.LOGIN) { inclusive = true }
                     }
-                    else -> {}
                 }
-            }
 
-            if (isProgressVisible) {
-                ProgressDialog()
+                else -> {}
             }
-
-            LoginContent(loginViewModel, navController)
         }
+
+        if (isProgressVisible) {
+            ProgressDialog()
+        }
+
+        LoginContent(loginViewModel, navController)
+    }
 
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun LoginContent(loginViewModel: LoginViewModel, navController: NavController) {
-     val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val isLoading: Boolean by loginViewModel.isLoading.observeAsState(initial = false)
     val context = LocalContext.current
@@ -159,7 +160,7 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
                     },
                 contentAlignment = Alignment.BottomCenter
             ) {
-                LogoImage(modifier = Modifier.offset(y =105.dp))
+                LogoImage(modifier = Modifier.offset(y = 105.dp))
             }
 
 
@@ -180,7 +181,7 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
                     isLoading = isLoading,
                     onLoginClick = {
                         if (Connected.isConnected(context)) {
-                            loginViewModel.onLoginSelected( navController)
+                            loginViewModel.onLoginSelected(navController)
                         } else {
                             scope.launch {
                                 snackbarHostState.showSnackbar(
@@ -276,7 +277,7 @@ private fun LoginForm(
         Text(
             text = loginMessage,
             color = Color.Red,
-            style = TextStyle(fontSize = 14.sp,   fontWeight = FontWeight.Bold,  ),
+            style = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Bold),
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )

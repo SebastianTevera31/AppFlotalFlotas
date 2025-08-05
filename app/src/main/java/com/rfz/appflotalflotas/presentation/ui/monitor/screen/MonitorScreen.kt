@@ -1,13 +1,7 @@
 package com.rfz.appflotalflotas.presentation.ui.monitor.screen
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
-import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.border
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,22 +10,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Sensors
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
-import com.rfz.appflotalflotas.core.util.validateBluetoothConnectivity
+import androidx.core.graphics.toColorInt
+import com.rfz.appflotalflotas.R
 import com.rfz.appflotalflotas.data.repository.bluetooth.BluetoothSignalQuality
 import com.rfz.appflotalflotas.data.repository.bluetooth.MonitorDataFrame
 import com.rfz.appflotalflotas.data.repository.bluetooth.SensorAlertDataFrame
@@ -49,27 +45,19 @@ fun MonitorScreen(
 
     val sensorId = monitorUiState.value.sensorId
 
-    if (sensorId != "N/A") {
-        MonitorScreenView(
-            wheel = monitorUiState.value.wheel,
-            id = monitorUiState.value.sensorId,
-            battery = monitorUiState.value.battery,
-            pression = monitorUiState.value.pression.first,
-            pressionStatus = monitorUiState.value.pression.second,
-            temperature = monitorUiState.value.temperature.first,
-            temperatureStatus = monitorUiState.value.temperature.second,
-            qualityBluetooth = monitorUiState.value.signalIntensity.first,
-            measuredBluetooth = monitorUiState.value.signalIntensity.second,
-            timestamp = monitorViewModel.getCurrentRecordDate(),
-            modifier = modifier.fillMaxSize()
-        )
-    } else {
-        EmptyMonitorData(
-            qualityBluetooth = monitorUiState.value.signalIntensity.first,
-            measuredBluetooth = monitorUiState.value.signalIntensity.second,
-            modifier = modifier.fillMaxSize()
-        )
-    }
+    MonitorScreenView(
+        wheel = monitorUiState.value.wheel,
+        id = monitorUiState.value.sensorId,
+        battery = monitorUiState.value.battery,
+        pression = monitorUiState.value.pression.first,
+        pressionStatus = monitorUiState.value.pression.second,
+        temperature = monitorUiState.value.temperature.first,
+        temperatureStatus = monitorUiState.value.temperature.second,
+        qualityBluetooth = monitorUiState.value.signalIntensity.first,
+        measuredBluetooth = monitorUiState.value.signalIntensity.second,
+        timestamp = monitorViewModel.getCurrentRecordDate(),
+        modifier = modifier.fillMaxSize()
+    )
 }
 
 @Composable
@@ -87,154 +75,127 @@ fun MonitorScreenView(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.padding(16.dp),
+        modifier = modifier
+            .background(Color("#E9E9E9".toColorInt())),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Text("Unidad 001", color = Color.Black, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+        Box {
+            Image(
+                painter = painterResource(R.drawable.chasis_example),
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .height(250.dp)
+                    .fillMaxWidth()
+            )
+        }
+        Row {
+            PanelSensor(modifier = Modifier.weight(1f))
+            PanelLlantas(modifier = Modifier.weight(1f))
+        }
+    }
+}
+
+@Composable
+fun PanelSensor(modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
+        Card(
+            colors = CardDefaults.cardColors(Color.White),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp)
+        ) {
             Text(
-                text = "Llanta: $wheel",
-                fontWeight = FontWeight.Black,
-                fontSize = 23.sp
+                text = "Llanta P01",
+                color = Color.Blue,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(16.dp)
             )
-            HCDataText(
-                modifier = Modifier
-                    .border(
-                        2.dp,
-                        color = Color.Blue,
-                        shape = RoundedCornerShape(8.dp)
-                    ),
-                text = "SENSOR ID: $id",
-            )
-
-            HCDataText(
-                modifier = Modifier
-                    .border(
-                        2.dp,
-                        color = Color.Blue,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .height(60.dp),
-                text = "Bateria: $battery",
-            )
-
-
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                HCDataText(
-                    modifier = Modifier
-                        .border(
-                            2.dp,
-                            color = Color.Blue,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .weight(1f)
-                        .height(60.dp),
-                    text = "Presión:  $pressionStatus",
-                )
-                HCDataText(
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(60.dp),
-                    text = "$pression PSI",
-                )
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                CeldaDatosSensor()
+                CeldaDatosSensor()
+                CeldaDatosSensor()
             }
+        }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                HCDataText(
-                    modifier = Modifier
-                        .border(
-                            2.dp,
-                            color = Color.Blue,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .weight(1f)
-                        .height(60.dp),
-                    text = if (temperatureStatus != "Normal") "Temp.: $temperatureStatus" else "Temperatura",
-                )
-                HCDataText(
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(60.dp),
-                    text = "$temperature °C",
-                )
-            }
-
-            HCDataText(
-                "Señal Bluetooth: $qualityBluetooth \n" +
-                        measuredBluetooth,
-                modifier = Modifier
-                    .border(
-                        2.dp,
-                        color = Color.Blue,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .height(80.dp),
+        Card(
+            colors = CardDefaults.cardColors(Color.White),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "Alertas activas",
+                color = Color.Blue,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(16.dp)
             )
-
-            // Timestamp proviene del registro de la base de datos
-            if (!validateBluetoothConnectivity(qualityBluetooth) && timestamp != null
-            ) {
-                HCDataText(
-                    text = "Ultimo registro sensado\n$timestamp", Modifier
-                        .border(
-                            2.dp,
-                            color = Color.Blue,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                )
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                CeldaAlerta()
+                CeldaAlerta()
+                CeldaAlerta()
             }
         }
     }
 }
 
 @Composable
-fun EmptyMonitorData(
-    qualityBluetooth: BluetoothSignalQuality,
-    measuredBluetooth: String,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier.padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        HCDataText(
-            text = "Sin datos", Modifier
-                .height(250.dp)
-                .border(
-                    2.dp,
-                    color = Color.Blue,
-                    shape = RoundedCornerShape(8.dp)
-                )
-        )
+fun PanelLlantas(modifier: Modifier = Modifier) {
+    Card(colors = CardDefaults.cardColors(Color.White), modifier = modifier.fillMaxSize()) {}
+}
 
-        HCDataText(
-            "Señal Bluetooth: $qualityBluetooth \n" +
-                    measuredBluetooth,
-            modifier = Modifier
-                .border(
-                    2.dp,
-                    color = Color.Blue,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .height(80.dp),
-        )
+@Composable
+fun CeldaDatosSensor(modifier: Modifier = Modifier) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .background(Color("#2E3192".toColorInt()))
+    ) {
+        Image(Icons.Filled.Sensors, contentDescription = null, modifier = Modifier.weight(1f))
+        Column(modifier = Modifier.weight(2f)) {
+            Text("Temperatura")
+            Text("45 C")
+        }
     }
 }
 
 @Composable
-fun HCDataText(
-    text: String,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()
+fun CeldaAlerta(modifier: Modifier = Modifier) {
+    Text(
+        "P07: Temperatura alta",
+        color = Color("#fbcbcb".toColorInt()),
+        modifier = Modifier.background(Color.Red)
+    )
+}
+
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun MonitorScreenPreview() {
+    val data = "aaa1410e630147e85e00124f08f4"
+    val sensorId = decodeDataFrame(data, MonitorDataFrame.SENSOR_ID)
+    val wheel = decodeDataFrame(data, MonitorDataFrame.POSITION_WHEEL)
+    val battery = decodeAlertDataFrame(data, SensorAlertDataFrame.LOW_BATTERY)
+    val pressionValue = decodeDataFrame(data, MonitorDataFrame.PRESSION)
+    val pressionStatus = decodeAlertDataFrame(data, SensorAlertDataFrame.PRESSURE)
+    val temperatureValue = decodeDataFrame(data, MonitorDataFrame.TEMPERATURE)
+    val temperatureStatus = decodeAlertDataFrame(data, SensorAlertDataFrame.HIGH_TEMPERATURE)
+    val calidadBluetooth = BluetoothSignalQuality.Pobre
+    val measuredBluetooth = "-70 dBm"
+    ProyectoFscSoftTheme {
+        MonitorScreenView(
+            wheel,
+            sensorId,
+            battery,
+            pressionValue,
+            pressionStatus,
+            temperatureValue,
+            temperatureStatus,
+            calidadBluetooth,
+            measuredBluetooth,
+            timestamp = "21 de Julio de 2025 | hora: 14:20:00",
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
